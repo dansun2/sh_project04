@@ -93,6 +93,7 @@ public class PhoneController {
             System.out.print("삭제할 연락처의 이름을 입력하세요 : ");
             String name = sc.nextLine();
 
+
             PhoneDTO ph = null; // 강제 초기화
 
             try {
@@ -101,13 +102,17 @@ public class PhoneController {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-
-            try {
-                phoneService.phoneDelete(name);
-                System.out.println("삭제가 완료되었습니다.");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            System.out.print("삭제하시겠습니까? ( yes / no ) : ");
+            String check = sc.nextLine();
+            if(check.equalsIgnoreCase("yes")){
+                try {
+                    phoneService.phoneDelete(name);
+                    System.out.println("삭제가 완료되었습니다.");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
+
         }
     }
 
