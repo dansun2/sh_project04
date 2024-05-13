@@ -20,6 +20,7 @@ public class PhoneRepository {
     private Properties pros =new Properties();
     private Connection con = null;
     private PreparedStatement pstmt = null;
+    private PreparedStatement pstmt2 = null;
     private ResultSet rset = null;
 
     public PhoneRepository(){
@@ -117,34 +118,55 @@ public class PhoneRepository {
 
         return ph;
     }
-
     public int phoneInsert(PhoneDTO ph) {
-        // 값을 추가
-        // 쿼리 가져옴
         String query = pros.getProperty("phoneInsert");
-        // connection
+        String query2 = pros.getProperty("phoneInsert2");
         con = getConnection();
-        int result = 0;
-        // 쿼리를 사용하기 위함
-        try {
-            pstmt = con.prepareStatement(query);
-//            pstmt.setInt(1,ph.getUserCode());
-            pstmt.setString(1,ph.getUserName());
-            pstmt.setString(2,ph.getUserEmail());
-            pstmt.setString(3,ph.getUserMemo());
-            pstmt.setString(4,ph.getUserGroup());
-            pstmt.setString(5,ph.getPhone());
-            pstmt.setString(6,ph.getPhoneName());
+//        PreparedStatement pstmt1 = null;
+//        PreparedStatement pstmt2 = null;
+        int result1 = 0;
+        int result2 = 0;
 
-            result = pstmt.executeUpdate();
+        try {
+            con = getConnection();
+
+
+            pstmt = con.prepareStatement(query);
+            pstmt.setString(1, ph.getUserName());
+            pstmt.setString(2, ph.getUserEmail());
+            pstmt.setString(3, ph.getUserMemo());
+            pstmt.setString(4, ph.getUserGroup());
+            result1 = pstmt.executeUpdate();
+
+            pstmt2 = con.prepareStatement(query2);
+            pstmt2.setString(1, ph.getPhone());
+            pstmt2.setString(2, ph.getPhoneName());
+            result2 = pstmt2.executeUpdate();
+
+
         } catch (SQLException e) {
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException e2) {
+                throw new RuntimeException(e2);
+            }
             throw new RuntimeException(e);
-        }finally {
-            close(con);
+        } finally {
+            try {
+                if (con != null) {
+                    con.setAutoCommit(true);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             close(pstmt);
+            close(pstmt2);
+            close(con);
         }
 
-        return result;
+        return result1 + result2;
     }
 
     public int phoneModify(String name, String index) {
@@ -165,18 +187,16 @@ public class PhoneRepository {
         }
 
         return result;
-    }
 
-    //*******
-    //*******
-    public int phoneDelete(String index){
+    }
+    public int phoneDelete(String name){
         String query = pros.getProperty("phoneDelete");
         con = getConnection();
         int result = 0;
 
         try {
             pstmt = con.prepareStatement(query);
-            pstmt.setString(1, index);
+            pstmt.setString(1, name);
             result = pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

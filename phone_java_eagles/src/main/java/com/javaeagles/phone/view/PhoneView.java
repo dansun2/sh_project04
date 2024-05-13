@@ -17,7 +17,7 @@ public class PhoneView {
             System.out.println("3. 정보 등록하기");
             System.out.println("4. 정보 수정하기");
             System.out.println("5. 정보 삭제하기");
-            System.out.print("화면 번호를 입력해주세요 : ");
+            System.out.println("화면 번호를 입력해주세요 : ");
             Scanner sc = new Scanner(System.in);
             int index = Integer.parseInt(sc.nextLine());
 
@@ -41,7 +41,7 @@ public class PhoneView {
             System.out.print("종료를 하시겠습니까? (yes Or no) 오타x 소문자만 : ");
             String result = sc.nextLine();
 
-            if(result.equalsIgnoreCase("yes")){ //*******
+            if(result.equalsIgnoreCase("yes")){
                 state = false;
                 sc.close();
             }

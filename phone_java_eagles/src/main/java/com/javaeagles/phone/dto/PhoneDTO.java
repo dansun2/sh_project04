@@ -100,6 +100,6 @@ public class PhoneDTO {
                 ", phoneCode='" + phoneCode + '\'' +
                 ", phoneName='" + phoneName + '\'' +
                 ", phone='" + phone + '\'' +
-                '}';
+                '}'+'\n';
     }
 }
