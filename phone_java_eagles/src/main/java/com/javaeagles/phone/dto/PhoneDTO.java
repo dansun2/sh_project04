@@ -97,6 +97,6 @@ public class PhoneDTO {
                 "메모 = " + userMemo + '\n' +
                 "그룹 = " + userGroup + '\n' +
                 "<" + phoneName + "> " +
-                "번호 = " + phone + '\n';
+                "번호 = " + phone;
     }
 }
