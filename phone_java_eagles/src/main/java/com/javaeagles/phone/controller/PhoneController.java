@@ -31,6 +31,7 @@ public class PhoneController {
         String name = sc.nextLine();
         PhoneDTO ph = null; // 강제 초기화
 
+
         try {
             ph = phoneService.phoneFindByName(name);
             System.out.println(ph);
@@ -69,12 +70,12 @@ public class PhoneController {
 
     public static void phoneUpdate() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("변경할 전화번호를 입력하세요");
+        System.out.println("변경할 단축번호를 입력하세요");
         String index = sc.nextLine();
         PhoneDTO ph = phoneService.phoneFindById(index);
 
         if (ph == null) {
-            System.out.println("변경할 사원이 존재하지 않습니다.");
+            System.out.println("변경할 번호가 존재하지 않습니다.");
             return;
         }
         System.out.println(ph);
@@ -88,31 +89,25 @@ public class PhoneController {
         }
     }
 
-        public static void phoneDelete() {
-            Scanner sc = new Scanner(System.in);
-            System.out.print("삭제할 연락처의 이름을 입력하세요 : ");
-            String name = sc.nextLine();
+    public static void phoneDelete() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("삭제할 연락처의 이름을 입력하세요 : ");
+        String name = sc.nextLine();
 
+        PhoneDTO ph = null; // 강제 초기화
 
-            PhoneDTO ph = null; // 강제 초기화
+        try {
+            ph = phoneService.phoneFindByName(name);
+            System.out.println(ph);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-            try {
-                ph = phoneService.phoneFindByName(name);
-                System.out.println(ph);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            System.out.print("삭제하시겠습니까? ( yes / no ) : ");
-            String check = sc.nextLine();
-            if(check.equalsIgnoreCase("yes")){
-                try {
-                    phoneService.phoneDelete(name);
-                    System.out.println("삭제가 완료되었습니다.");
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
+        try {
+            phoneService.phoneDelete(name);
+            System.out.println("삭제가 완료되었습니다.");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
-
+}
